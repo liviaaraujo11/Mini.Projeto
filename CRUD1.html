@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+</head>
+<body>
+    <script>
+        class Produto {
+            constructor(nome, preco, descricao, codigo) {
+                this.nome = nome;
+                this.preco = preco;
+                this.descricao = descricao;
+                this.codigo = codigo;
+            }
+        }
+
+        class Catalogo {
+            constructor() {
+                this.produtos = [];
+            }
+
+            adicionarProduto(nome, preco, descricao, codigo) {
+                const produto = new Produto(nome, preco, descricao, codigo);
+                this.produtos.push(produto);
+                alert("O produto cadastrado foi adicionado com sucesso!");
+            }
+
+            buscarProduto(codigo) {
+                let encontrado = false;
+                this.produtos.forEach(produto => {
+                    if (produto.codigo.toLowerCase() === codigo.toLowerCase()) {
+                        alert(`Produto encontrado:\nNome: ${produto.nome}\nPreço: ${produto.preco}\nDescrição: ${produto.descricao}`);
+                        encontrado = true;
+                    }
+                });
+                if (!encontrado) {
+                    alert("Produto não encontrado.");
+                }
+            }
+
+            visualizarTodosProdutos() {
+                let listaProdutos = "Lista de Produtos:\n";
+                this.produtos.forEach(produto => {
+                    listaProdutos += `Nome: ${produto.nome}, Preço: ${produto.preco}, Descrição: ${produto.descricao}, Codigo: ${produto.codigo},\n`;
+                });
+                alert(listaProdutos);
+            }
+
+            removerProduto(codigo) {
+                const index = this.produtos.findIndex(
+                    produto => produto.codigo.toLowerCase() === codigo.toLowerCase()
+                );
+                if (index !== -1) {
+                    this.produtos.splice(index, 1);
+                    alert("Esse produto foi removido com sucesso!");
+                } else {
+                    alert("O produto não foi encontrado para remoção, tente novamente!");
+                }
+            }
+
+            atualizarProduto(nome, novoPreco, novaDescricao, novoCodigo) {
+                let encontrado = false;
+                this.produtos.forEach(produto => {
+                    if (produto.nome.toLowerCase() === nome.toLowerCase()) {
+                        produto.preco = novoPreco;
+                        produto.descricao = novaDescricao;
+                        produto.codigo = novoCodigo;
+                        alert("Informações do produto atualizadas com sucesso!");
+                        encontrado = true;
+                    }
+                });
+                if (!encontrado) {
+                    alert("Seu produto não foi encontrado para atualização!");
+                }
+            }
+        }
+
+        const catalogo = new Catalogo();
+
+        while (true) {
+            const resp = prompt(
+                "Menu:\n1-Adicionar Produto\n2-Buscar Produto\n3-Atualizar Produto\n4-Visualizar Todos os Produtos\n5-Remover Produto\n6-Sair"
+            );
+
+            if (resp === "1") {
+                const nome = prompt("Digite o nome do produto:");
+                const preco = parseFloat(prompt("Digite o preço do produto:"));
+                const descricao = prompt("Digite a descrição do produto:");
+                const codigo = prompt("Digite o código do item: ");
+                catalogo.adicionarProduto(nome, preco, descricao, codigo);
+            } else if (resp === "2") {
+                const busca = prompt("Digite o código do produto que deseja buscar:");
+                catalogo.buscarProduto(busca);
+            } else if (resp === "3") {
+                const nome = prompt("Digite o nome do produto que deseja atualizar:");
+                const novoPreco = parseFloat(prompt("Digite o novo preço do produto:"));
+                const novaDescricao = prompt("Digite a nova descrição do produto:");
+                const novoCodigo = prompt("Digite o novo código do produto:");
+                catalogo.atualizarProduto(nome, novoPreco, novaDescricao, novoCodigo);
+            } else if (resp === "4") {
+                catalogo.visualizarTodosProdutos();
+            } else if (resp === "5") {
+                const codigo = prompt("Digite o código do produto que deseja remover:");
+                catalogo.removerProduto(codigo);
+            } else if (resp === "6") {
+                break;
+            } else {
+                alert("Opção inválida. Por favor, tente mais uma vez.");
+            }
+        }
+    </script>
+</body>
+</html>
